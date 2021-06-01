@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gameClothes.model.Product;
 import br.gameClothes.model.User;
+import br.gameClothes.persistence.ProductDAO;
 import br.gameClothes.persistence.UserDAO;
 
 /**
@@ -40,31 +41,29 @@ public class ProductController {
 	@PostMapping(value = "/sign-in", produces = { "application/json",
 			"application/xml" }, consumes = "application/json")
 	public ResponseEntity<User> signIn(@RequestBody User body) throws Exception {
-		
+
 		User user = userDAO.authenticateUser(body.getUsername(), body.getPassword());
-		
-		if(user == null) {
+
+		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 
 	}
 
-	@GetMapping(value = "/my-store")
-	public ResponseEntity<List<Product>> getMyList() throws SQLException {
-		
-		List<Product> products = productDAO.readMyStore();
+	@GetMapping(value = "/my-store/{id}")
+	public ResponseEntity<List<Product>> getMyList(@RequestParam(name = "id") Integer id) throws SQLException {
 
-		if (products == null) {
+		List<Product> products;
+		try {
+			products = productDAO.readMyStore(id);
+
+		} catch (Exception e) {
 			return new ResponseEntity<List<Product>>(HttpStatus.BAD_REQUEST);
 		}
 
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-		;
-
-		
-		return null;
 
 	}
 
@@ -75,28 +74,28 @@ public class ProductController {
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Product> getProduct(@RequestParam(name = "id") Integer id) throws SQLException {
 
-		Product product = productDAO.findProduct(id);
-
-		if (product == null) {
+		Product product;
+		try {
+			product = productDAO.findProduct(id);
+		} catch (Exception e) {
 			return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
 		}
 
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
-		;
 
 	}
 
 	@GetMapping("/product")
 	public ResponseEntity<List<Product>> getProductList() throws SQLException {
 
-		List<Product> products = productDAO.readStore();
-
-		if (products == null) {
+		List<Product> products;
+		try {
+			products = productDAO.readStore();
+		} catch (Exception e) {
 			return new ResponseEntity<List<Product>>(HttpStatus.BAD_REQUEST);
 		}
 
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-		;
 
 	}
 }

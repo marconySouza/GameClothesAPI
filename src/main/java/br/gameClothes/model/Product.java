@@ -2,6 +2,8 @@ package br.gameClothes.model;
 
 import java.sql.Date;
 
+import br.gameClothes.enums.Game;
+
 public class Product {
 
 		private Integer idProduct;

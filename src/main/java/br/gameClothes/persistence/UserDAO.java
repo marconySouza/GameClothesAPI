@@ -16,9 +16,11 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import br.gameClothes.database.DBConnection;
+import br.gameClothes.model.Product;
+import br.gameClothes.model.User;
 
 /**
- * @author marcony.souza
+ * @author marcony.souza + luiz.viana
  *
  */
 public class UserDAO {
@@ -69,51 +71,48 @@ public class UserDAO {
 		return false;
 	}
 
-	public boolean authenticateUser(String username, String password) throws Exception {
+	public User authenticateUser(String username, String password) throws Exception {
 		Connection con = DBConnection.getConnection();
 		Statement stm = con.createStatement();
+		User user = new User();
 		try {
 
-			String query = "SELECT COUNT(id_user) as qtd FROM USERS WHERE USERNAME = '" + username
+			String query = "SELECT * FROM USERS WHERE USERNAME = '" + username
 					+ "' and PASSWORD = '" + password + "'";
 			ResultSet rs = stm.executeQuery(query);
-			rs.next();
-			int qtd = rs.getInt("qtd");
-			if (qtd == 1)
-				return true;
-			else
-				throw new Exception("Verifique se o login ou senha estão corretos");
-
+			while (rs.next()) {
+				user.setIdUser(rs.getInt("id_user"));
+				user.setUsername(rs.getString("username"));
+			}
+			
+			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
-	/**
-	 * marcony.souza
-	 * 
-	 * @throws SQLException
-	 * 
-	 */
-	public boolean saveInMyList(String idEntertainment, String idUser, String type) throws SQLException {
+	public User findUser(Integer idUser) throws Exception {
 		Connection con = DBConnection.getConnection();
 		Statement stm = con.createStatement();
+		User user = new User();
+
 		try {
-			String query = "";
-			if (type.equalsIgnoreCase("filme")) {
-				query += "INSERT INTO SAVED_MOVIES (ID_SAVED_MOVIES, ID_MOVIE, ID_USER) VALUES (DEFAULT, "
-						+ idEntertainment + ", " + idUser + ")";
-			} else {
-				query += "INSERT INTO SAVED_TV_SHOWS (ID_TV_SHOW_SAVED, ID_TV_SHOW, ID_USER) VALUES (DEFAULT, "
-						+ idEntertainment + ", " + idUser + ")";
+
+			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE ID_USER = '" + idUser + "'";
+			ResultSet rs = stm.executeQuery(query);
+
+			while (rs.next()) {
+				user.setIdUser(rs.getInt("id_user"));
+				user.setUsername(rs.getString("username"));
 			}
-			stm.execute(query);
-			return true;
-		} catch (Exception e) {
+
+			return user;
+
+		} catch (SQLException e) {
 			con.rollback();
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 }
