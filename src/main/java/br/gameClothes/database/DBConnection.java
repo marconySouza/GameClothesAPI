@@ -12,20 +12,19 @@ import java.sql.DriverManager;
  */
 public class DBConnection {
 
-	private static Connection connection;
+private static Connection connection;
+	
+	static { 
+		try { 
+			Class.forName("org.hsqldb.jdbc.JDBCDriver");
+			connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/dbGameClothes",
+					"SA", ""); 
+			} catch (Exception e) { 
+				e.printStackTrace(); 
+				}
+		} 
 
-	static {
-		try {
-			// Driver do banco a ser utilizado
-			Class.forName("org.postgresql.Driver");
-			// Iniciando uma conex�o com as informa��es do banco de dados
-			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/netfoundDB", "postgres", "netfound123");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static Connection getConnection() { 
+		return connection; 
+		} 
 	}
-
-	public static Connection getConnection() {
-		return connection;
-	}
-}

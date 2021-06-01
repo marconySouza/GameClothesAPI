@@ -51,5 +51,13 @@ public class User {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "User [idUser=" + idUser + ", username=" + username + ", password=" + password + ", myStore=" + myStore
+				+ ", getMyStore()=" + getMyStore() + ", getIdUser()=" + getIdUser() + ", getUsername()=" + getUsername()
+				+ ", getPassword()=" + getPassword() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
+
 	
 }

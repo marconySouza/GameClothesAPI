@@ -3,19 +3,13 @@
  */
 package br.gameClothes.persistence;
 
-import java.lang.reflect.GenericArrayType;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.http.client.utils.DateUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import br.gameClothes.database.DBConnection;
 import br.gameClothes.enums.Game;

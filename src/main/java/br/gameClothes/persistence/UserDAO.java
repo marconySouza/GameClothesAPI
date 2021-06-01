@@ -3,20 +3,13 @@
  */
 package br.gameClothes.persistence;
 
-import java.lang.reflect.GenericArrayType;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import br.gameClothes.database.DBConnection;
-import br.gameClothes.model.Product;
 import br.gameClothes.model.User;
 
 /**
@@ -60,8 +53,13 @@ public class UserDAO {
 			if (count > 0)
 				throw new Exception("Já existe um usuário com esse username");
 
-			String queryInsert = "INSERT INTO USERS (ID_USER, USERNAME, PASSWORD, FLAG_ADMIN) VALUES (DEFAULT, '"
-					+ username + "', '" + password + "', 0)";
+			
+			String queryCount = "SELECT MAX(id_user) as qtd FROM USERS";
+			ResultSet rsAux = stm.executeQuery(queryCount);
+			rsAux.next();
+			int id = rsAux.getInt("qtd") + 1;
+			
+			String queryInsert = "INSERT INTO USERS (ID_USER, USERNAME, PASSWORD) VALUES ("+ id + ", '" + username + "', '" + password + "'" + ")";
 			stm.execute(queryInsert);
 			return true;
 		} catch (SQLException e) {
@@ -100,6 +98,30 @@ public class UserDAO {
 		try {
 
 			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE ID_USER = '" + idUser + "'";
+			ResultSet rs = stm.executeQuery(query);
+
+			while (rs.next()) {
+				user.setIdUser(rs.getInt("id_user"));
+				user.setUsername(rs.getString("username"));
+			}
+
+			return user;
+
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public User findUser(String username) throws Exception {
+		Connection con = DBConnection.getConnection();
+		Statement stm = con.createStatement();
+		User user = new User();
+
+		try {
+
+			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE USERNAME = '" + username + "'";
 			ResultSet rs = stm.executeQuery(query);
 
 			while (rs.next()) {
