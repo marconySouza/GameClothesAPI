@@ -15,7 +15,7 @@ public enum Game {
 		return descricao;
 	}
 
-	public Game findGame(String descricao) {
+	public static Game findGame(String descricao) {
 
 		for (Game game : values()) {
 			if (game.getDescricao().equals(descricao)) {

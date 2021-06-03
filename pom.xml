@@ -55,7 +55,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>netfoundAPI</finalName>
+		<finalName>GameClothesAPI</finalName>
 
 		<plugins>
 			<plugin>

@@ -23,7 +23,6 @@ import br.gameClothes.model.User;
 public class ProductDAO {
 
 	static private UserDAO userDAO;
-	static private Game game;
 
 	//Alterar um produto
 	public boolean alterProduct(String idProduct, String title, String image, double price) {
@@ -69,7 +68,7 @@ public class ProductDAO {
 
 			Date today = new Date();
 
-			String queryInsert = "INSERT INTO PRODUCTS (ID_PRODUCT, USER, TITLE, IMAGE, GAME, PRICE, CREATE_DATE) VALUES (DEFAULT, '"
+			String queryInsert = "INSERT INTO PRODUCTS (ID_PRODUCT, ID_USER, TITLE, IMAGE, GAME, PRICE, CREATE_DATE) VALUES (DEFAULT, '"
 					+ user.getIdUser() + "', '" + title + "', '" + image + "', '" + game.getDescricao() + "', '" + price
 					+ "', '" + today + "')";
 			stm.execute(queryInsert);
@@ -86,19 +85,20 @@ public class ProductDAO {
 		Connection con = DBConnection.getConnection();
 		Statement stm = con.createStatement();
 		Product product = new Product();
+		userDAO = new UserDAO();
 
 		try {
 
-			String query = "SELECT * FROM PRODUCTS WHERE ID_PRODUCT = '" + idProduct + "'";
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE ID_PRODUCT = '" + idProduct + "'";
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				product.setIdProduct(rs.getInt("id_product"));
-				product.setUser(userDAO.findUser(rs.getInt("user")));
+				product.setUser(userDAO.findUser(rs.getInt("ID_USER")));
 				product.setTitle(rs.getString("title"));
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(game.findGame(rs.getString("game")));
+				product.setGame(Game.findGame(rs.getString("game")));
 			}
 
 			return product;
@@ -115,20 +115,20 @@ public class ProductDAO {
 		List<Product> store = new ArrayList<Product>();
 		Connection con = DBConnection.getConnection();
 		Statement stm = con.createStatement();
-
+		userDAO = new UserDAO();
 		try {
 
-			String query = "SELECT * FROM PRODUCTS";
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS";
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();
 				product.setIdProduct(rs.getInt("id_product"));
-				product.setUser(userDAO.findUser(rs.getInt("user")));
+				product.setUser(userDAO.findUser(rs.getInt("ID_USER")));
 				product.setTitle(rs.getString("title"));
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(game.findGame(rs.getString("game")));
+				product.setGame(Game.findGame(rs.getString("game")));
 
 				store.add(product);
 			}
@@ -146,20 +146,21 @@ public class ProductDAO {
 		List<Product> myStore = new ArrayList<Product>();
 		Connection con = DBConnection.getConnection();
 		Statement stm = con.createStatement();
+		userDAO = new UserDAO();
 
 		try {
 
-			String query = "SELECT * FROM PRODUCTS WHERE USER = " + idUser + "'";
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE USER = " + idUser + "'";
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();
 				product.setIdProduct(rs.getInt("id_product"));
-				product.setUser(userDAO.findUser(rs.getInt("user")));
+				product.setUser(userDAO.findUser(rs.getInt("ID_USER")));
 				product.setTitle(rs.getString("title"));
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(game.findGame(rs.getString("game")));
+				product.setGame(Game.findGame(rs.getString("game")));
 
 				myStore.add(product);
 			}

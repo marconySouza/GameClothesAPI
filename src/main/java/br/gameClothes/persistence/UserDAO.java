@@ -75,7 +75,7 @@ public class UserDAO {
 		User user = new User();
 		try {
 
-			String query = "SELECT * FROM USERS WHERE USERNAME = '" + username
+			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE USERNAME = '" + username
 					+ "' and PASSWORD = '" + password + "'";
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
@@ -97,7 +97,7 @@ public class UserDAO {
 
 		try {
 
-			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE ID_USER = '" + idUser + "'";
+			String query = "SELECT ID_USER, USERNAME FROM USERS WHERE ID_USER = " + idUser;
 			ResultSet rs = stm.executeQuery(query);
 
 			while (rs.next()) {
