@@ -129,7 +129,7 @@ public class ProductController {
 
 	}
 
-	@GetMapping(value = "/my-store")
+	@GetMapping(value = "/myStore")
 	public ResponseEntity<List<Product>> getMyList(@RequestParam(name = "id") Integer id) throws SQLException {
 
 		List<Product> products;

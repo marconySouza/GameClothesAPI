@@ -182,7 +182,7 @@ public class ProductDAO {
 
 		try {
 
-			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE USER = " + idUser;
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE ID_USER = " + idUser;
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();
