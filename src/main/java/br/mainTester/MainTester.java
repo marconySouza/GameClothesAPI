@@ -15,8 +15,8 @@ public class MainTester {
 		
 		User user = new User();
 		
-		user.setPassword("ELE.");
-		user.setUsername("Lipão22");
+		user.setPassword("vivi");
+		user.setUsername("Vitoria");
 		
 		dao.createUser(user.getUsername(), user.getPassword());
 		

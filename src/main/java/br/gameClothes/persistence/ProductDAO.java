@@ -25,18 +25,30 @@ public class ProductDAO {
 	static private UserDAO userDAO;
 
 	//Alterar um produto
-	public boolean alterProduct(String idProduct, String title, String image, double price) {
+	public boolean alterProduct(Integer idProduct, String title, String image, Double price) {
 
 		if (idProduct == null)
 			return false;
-
 		try {
 			Connection con = DBConnection.getConnection();
 			Statement stm = con.createStatement();
 
-			String query = "UPDATE PRODUCTS SET TITLE = '" + title + "', IMAGE = '" + image + "', PRICE = '" + price
-					+ "' where id_product = " + idProduct;
+			String query = "UPDATE PRODUCTS SET TITLE = '" + title + "'";
+						
 
+			if(price != null) {
+				
+					query += ", PRICE = " + price;
+				
+			}
+			if(image != null) {
+				if(!image.trim().equalsIgnoreCase("")) {
+					query += ", IMAGE = '" + image + "'";
+				}
+			}
+			
+			query += " where id_product = " + idProduct;
+			
 			stm.execute(query);
 			return true;
 
@@ -47,10 +59,32 @@ public class ProductDAO {
 
 	}
 
-	//Criar um produto
-	public boolean createProduct(User user, String title, String image, Game game, double price) throws Exception {
+	//Deletar um produto
+	public boolean deleteProduct(Integer idProduct) throws Exception {
 
-		if (user == null || game == null) {
+		if (idProduct == null) {
+			return false;
+		}
+
+		Connection con = DBConnection.getConnection();
+		Statement stm = con.createStatement();
+
+		try {
+
+			String queryDelete = "DELETE FROM PRODUCTS WHERE ID_PRODUCT = " + idProduct;
+			stm.execute(queryDelete);
+			return true;
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	//Criar um produto
+	public boolean createProduct(Integer idUser, String title, String image, Game game, double price) throws Exception {
+
+		if (idUser == null || game == null) {
 			return false;
 		}
 
@@ -66,11 +100,9 @@ public class ProductDAO {
 			if (count > 0)
 				throw new Exception("Já existe um produto com esse título");
 
-			Date today = new Date();
-
-			String queryInsert = "INSERT INTO PRODUCTS (ID_PRODUCT, ID_USER, TITLE, IMAGE, GAME, PRICE, CREATE_DATE) VALUES (DEFAULT, '"
-					+ user.getIdUser() + "', '" + title + "', '" + image + "', '" + game.getDescricao() + "', '" + price
-					+ "', '" + today + "')";
+			String queryInsert = "INSERT INTO PRODUCTS (ID_USER, TITLE, IMAGE, GAME, PRICE, CREATE_DATE) VALUES ('"
+					+ idUser + "', '" + title + "', '" + image + "', '" + game.getDescricao() + "', " + price
+					+ ", current_date)";
 			stm.execute(queryInsert);
 			return true;
 		} catch (SQLException e) {
@@ -89,7 +121,7 @@ public class ProductDAO {
 
 		try {
 
-			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE ID_PRODUCT = '" + idProduct + "'";
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE ID_PRODUCT = " + idProduct;
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				product.setIdProduct(rs.getInt("id_product"));
@@ -150,7 +182,7 @@ public class ProductDAO {
 
 		try {
 
-			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE USER = " + idUser + "'";
+			String query = "SELECT ID_PRODUCT, ID_USER, TITLE, PRICE, IMAGE, CREATE_DATE, GAME FROM PRODUCTS WHERE USER = " + idUser;
 			ResultSet rs = stm.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();

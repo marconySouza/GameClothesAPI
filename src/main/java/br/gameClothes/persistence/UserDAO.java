@@ -54,12 +54,7 @@ public class UserDAO {
 				throw new Exception("Já existe um usuário com esse username");
 
 			
-			String queryCount = "SELECT MAX(id_user) as qtd FROM USERS";
-			ResultSet rsAux = stm.executeQuery(queryCount);
-			rsAux.next();
-			int id = rsAux.getInt("qtd") + 1;
-			
-			String queryInsert = "INSERT INTO USERS (ID_USER, USERNAME, PASSWORD) VALUES ("+ id + ", '" + username + "', '" + password + "'" + ")";
+			String queryInsert = "INSERT INTO USERS (USERNAME, PASSWORD) VALUES ('" + username + "', '" + password + "'" + ")";
 			stm.execute(queryInsert);
 			return true;
 		} catch (SQLException e) {
