@@ -93,13 +93,6 @@ public class ProductDAO {
 
 		try {
 
-			String query = "SELECT COUNT(id_product) as qtd FROM PRODUCTS WHERE TITLE = '" + title + "'";
-			ResultSet rs = stm.executeQuery(query);
-			rs.next();
-			int count = rs.getInt("qtd");
-			if (count > 0)
-				throw new Exception("Já existe um produto com esse título");
-
 			String queryInsert = "INSERT INTO PRODUCTS (ID_USER, TITLE, IMAGE, GAME, PRICE, CREATE_DATE) VALUES ('"
 					+ idUser + "', '" + title + "', '" + image + "', '" + game.getDescricao() + "', " + price
 					+ ", current_date)";
