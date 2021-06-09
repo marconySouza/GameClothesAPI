@@ -25,7 +25,7 @@ public class ProductDAO {
 	static private UserDAO userDAO;
 
 	//Alterar um produto
-	public boolean alterProduct(Integer idProduct, String title, String image, Double price) {
+	public boolean alterProduct(Integer idProduct, String title, String image, Double price, String game) {
 
 		if (idProduct == null)
 			return false;
@@ -33,7 +33,7 @@ public class ProductDAO {
 			Connection con = DBConnection.getConnection();
 			Statement stm = con.createStatement();
 
-			String query = "UPDATE PRODUCTS SET TITLE = '" + title + "'";
+			String query = "UPDATE PRODUCTS SET TITLE = '" + title + "', game = '" + game + "'";
 						
 
 			if(price != null) {

@@ -67,7 +67,8 @@ public class ProductController {
 			String title = json.getString("title");
 			String image = json.getString("image");
 			Double price = json.getDouble("price");
-		boolean r =	productDAO.alterProduct(idProduct, title, image, price);
+			String game = json.getString("game");
+		boolean r =	productDAO.alterProduct(idProduct, title, image, price, game);
 
 
 			if(!r) {
