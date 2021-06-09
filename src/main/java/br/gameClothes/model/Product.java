@@ -2,8 +2,6 @@ package br.gameClothes.model;
 
 import java.sql.Date;
 
-import br.gameClothes.enums.Game;
-
 public class Product {
 
 		private Integer idProduct;
@@ -16,7 +14,7 @@ public class Product {
 		
 		private String image;
 		
-		private Game game;
+		private String game;
 		
 		private double price;
 
@@ -36,11 +34,11 @@ public class Product {
 			this.image = image;
 		}
 
-		public Game getGame() {
+		public String getGame() {
 			return game;
 		}
 
-		public void setGame(Game game) {
+		public void setGame(String game) {
 			this.game = game;
 		}
 

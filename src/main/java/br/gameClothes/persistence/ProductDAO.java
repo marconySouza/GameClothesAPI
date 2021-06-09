@@ -123,7 +123,7 @@ public class ProductDAO {
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(Game.findGame(rs.getString("game")));
+				product.setGame(Game.valueOf(rs.getString("game")).toString());
 			}
 
 			return product;
@@ -153,7 +153,7 @@ public class ProductDAO {
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(Game.findGame(rs.getString("game")));
+				product.setGame(Game.valueOf(rs.getString("game")).toString());
 
 				store.add(product);
 			}
@@ -185,7 +185,7 @@ public class ProductDAO {
 				product.setPrice(rs.getDouble("price"));
 				product.setImage(rs.getString("image"));
 				product.setCreateDate(rs.getDate("create_date"));
-				product.setGame(Game.findGame(rs.getString("game")));
+				product.setGame(Game.valueOf(rs.getString("game")).toString());
 
 				myStore.add(product);
 			}

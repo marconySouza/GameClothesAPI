@@ -138,6 +138,7 @@ public class ProductController {
 			products = productDAO.readMyStore(id);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<List<Product>>(HttpStatus.BAD_REQUEST);
 		}
 
